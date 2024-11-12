@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Hari Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .week {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .week-title {
+            font-size: 1.2em;
+            color: #007acc;
+        }
+        .checklist-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .affirmation {
+            text-align: center;
+            font-style: italic;
+            color: #333;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .affirmation-img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>30 Hari Checklist - Menyelesaikan Tantangan</h2>
+        <h4>Mulai 12 September 2024</h4>
+        
+        <div id="checklist-container"></div>
+
+        <button onclick="saveChecklist()">Simpan Checklist</button>
+    </div>
+
+    <script>
+        // Daftar gambar afirmasi untuk tiap minggu
+        const affirmations = [
+            {  text: 'Minggu 1: Kamu sudah memulai langkah hebat!' },
+            {  text: 'Minggu 2: Lanjutkan, kamu semakin kuat!' },
+            {  text: 'Minggu 3: Kamu lebih dari yang kamu pikirkan!' },
+            {  text: 'Minggu 4: Hampir sampai, teruskan!' },
+        ];
+
+        function generateChecklist() {
+            const checklistContainer = document.getElementById("checklist-container");
+
+            for (let week = 1; week <= 4; week++) {
+                const weekContainer = document.createElement("div");
+                weekContainer.className = "week";
+
+                const weekTitle = document.createElement("h3");
+                weekTitle.className = "week-title";
+                weekTitle.textContent = `Minggu ${week}`;
+                weekContainer.appendChild(weekTitle);
+
+                const checklistRow = document.createElement("div");
+                checklistRow.className = "checklist-row";
+
+                // Menambahkan 7 hari checklist per minggu
+                for (let day = 1; day <= 7; day++) {
+                    const dayNum = (week - 1) * 7 + day;
+                    const checklistItem = document.createElement("div");
+                    checklistItem.className = "checklist-item";
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.id = "day" + dayNum;
+
+                    const label = document.createElement("label");
+                    label.htmlFor = "day" + dayNum;
+                    label.textContent = `Hari ${dayNum}`;
+
+                    checklistItem.appendChild(checkbox);
+                    checklistItem.appendChild(label);
+                    checklistRow.appendChild(checklistItem);
+                }
+
+                weekContainer.appendChild(checklistRow);
+
+                // Tambahkan gambar dan teks afirmasi
+               
+
+                const affirmationText = document.createElement("p");
+                affirmationText.className = "affirmation";
+                affirmationText.textContent = affirmations[week - 1].text;
+                weekContainer.appendChild(affirmationText);
+
+                checklistContainer.appendChild(weekContainer);
+            }
+        }
+
+        // Menyimpan checklist ke localStorage
+        function saveChecklist() {
+            const checklist = document.querySelectorAll('.checklist-item input');
+            checklist.forEach((item, index) => {
+                localStorage.setItem('day' + (index + 1), item.checked);
+            });
+            alert('Checklist disimpan!');
+        }
+
+        // Memuat checklist dari localStorage
+        function loadChecklist() {
+            const checklist = document.querySelectorAll('.checklist-item input');
+            checklist.forEach((item, index) => {
+                item.checked = localStorage.getItem('day' + (index + 1)) === 'true';
+            });
+        }
+
+        // Panggil fungsi generate dan load checklist saat halaman dimuat
+        window.onload = function() {
+            generateChecklist();
+            loadChecklist();
+        };
+    </script>
+</body>
+</html>
